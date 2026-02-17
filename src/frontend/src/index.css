@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Enhanced red primary color for modern look */
+    --background: oklch(98% 0.01 0);
+    --foreground: oklch(15% 0.02 0);
+    --card: oklch(100% 0 0);
+    --card-foreground: oklch(15% 0.02 0);
+    --popover: oklch(100% 0 0);
+    --popover-foreground: oklch(15% 0.02 0);
+    --primary: oklch(55% 0.22 25);
+    --primary-foreground: oklch(98% 0.01 0);
+    --secondary: oklch(96% 0.01 0);
+    --secondary-foreground: oklch(15% 0.02 0);
+    --muted: oklch(96% 0.01 0);
+    --muted-foreground: oklch(45% 0.02 0);
+    --accent: oklch(96% 0.01 0);
+    --accent-foreground: oklch(15% 0.02 0);
+    --destructive: oklch(55% 0.22 25);
+    --destructive-foreground: oklch(98% 0.01 0);
+    --border: oklch(90% 0.01 0);
+    --input: oklch(90% 0.01 0);
+    --ring: oklch(55% 0.22 25);
+    --radius: 0.5rem;
+    --chart-1: oklch(60% 0.15 150);
+    --chart-2: oklch(70% 0.15 200);
+    --chart-3: oklch(65% 0.15 30);
+    --chart-4: oklch(75% 0.12 80);
+    --chart-5: oklch(68% 0.18 330);
+  }
+
+  .dark {
+    --background: oklch(15% 0.02 0);
+    --foreground: oklch(98% 0.01 0);
+    --card: oklch(18% 0.02 0);
+    --card-foreground: oklch(98% 0.01 0);
+    --popover: oklch(18% 0.02 0);
+    --popover-foreground: oklch(98% 0.01 0);
+    --primary: oklch(60% 0.22 25);
+    --primary-foreground: oklch(98% 0.01 0);
+    --secondary: oklch(25% 0.02 0);
+    --secondary-foreground: oklch(98% 0.01 0);
+    --muted: oklch(25% 0.02 0);
+    --muted-foreground: oklch(65% 0.02 0);
+    --accent: oklch(25% 0.02 0);
+    --accent-foreground: oklch(98% 0.01 0);
+    --destructive: oklch(55% 0.22 25);
+    --destructive-foreground: oklch(98% 0.01 0);
+    --border: oklch(25% 0.02 0);
+    --input: oklch(25% 0.02 0);
+    --ring: oklch(60% 0.22 25);
+    --chart-1: oklch(55% 0.15 150);
+    --chart-2: oklch(65% 0.15 200);
+    --chart-3: oklch(60% 0.15 30);
+    --chart-4: oklch(70% 0.12 80);
+    --chart-5: oklch(63% 0.18 330);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Ping animation for notification badge */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Unified smooth continuous red blinking animation with enhanced timing and easing for plynulé, konzistentní behavior */
+@keyframes errorBlink {
+  0%, 100% {
+    border-color: rgb(220, 38, 38);
+    background-color: rgba(254, 226, 226, 1);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+  }
+  50% {
+    border-color: rgb(239, 68, 68);
+    background-color: rgba(255, 241, 242, 1);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+  }
+}
+
+.animate-error-blink {
+  animation: errorBlink 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Fix for Select dropdown components - ensure opaque background */
+[role="listbox"],
+[data-radix-select-content],
+.select-content {
+  background-color: white !important;
+  opacity: 1 !important;
+}
+
+.dark [role="listbox"],
+.dark [data-radix-select-content],
+.dark .select-content {
+  background-color: oklch(18% 0.02 0) !important;
+  opacity: 1 !important;
+}
+
+/* Ensure Select dropdown items have proper background */
+[role="option"],
+[data-radix-select-item] {
+  background-color: transparent;
+}
+
+[role="option"]:hover,
+[data-radix-select-item]:hover,
+[role="option"][data-highlighted],
+[data-radix-select-item][data-highlighted] {
+  background-color: oklch(96% 0.01 0) !important;
+}
+
+.dark [role="option"]:hover,
+.dark [data-radix-select-item]:hover,
+.dark [role="option"][data-highlighted],
+.dark [data-radix-select-item][data-highlighted] {
+  background-color: oklch(25% 0.02 0) !important;
+}

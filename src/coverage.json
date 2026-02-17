@@ -1,0 +1,50 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-17T14:04:19.302Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 1,
+    "implemented": 1,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Fix the admin-page form submission error that says the form is not connected to the backend by ensuring the frontend actor initialization does not fail when calling the existing backend access-control initialization method.\n\nSpecifically, update the actor creation flow so that if `initializeAccessControl()` (or `_initializeAccessControlWithSecret(...)` when present) throws because access control is already initialized, the error is handled and the actor is still returned/usable. Do not change any backend code or backend interface/structure.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useActor.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useActor.ts"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/http-outcalls/outcall.mo",
+    "build-request.json",
+    "build-template/Dockerfile",
+    "build-template/LICENSE",
+    "build-template/README.md",
+    "build-template/deploy.sh",
+    "build-template/icp.yaml",
+    "build-template/src/backend/canister.yaml",
+    "build-template/src/frontend/canister.yaml",
+    "caffeine.lock.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/config.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/ui-summary.json",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

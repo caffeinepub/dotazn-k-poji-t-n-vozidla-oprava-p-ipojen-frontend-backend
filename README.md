@@ -1,2 +1,3 @@
-# dotazn-k-poji-t-n-vozidla-oprava-p-ipojen-frontend-backend
-Exported from Caffeine project: Vehicle Insurance Questionnaire Application   Version 167
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

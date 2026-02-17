@@ -1,0 +1,24 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix admin form submission by making authenticated actor initialization resilient to already-initialized access control",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Handle access-control initialization errors during authenticated actor creation so the actor remains usable and admin form submissions can call createForm.",
+      "acceptanceCriteria": [
+        "From /admin (after Internet Identity login), submitting the form successfully calls the existing backend `createForm` method and shows the existing success behavior instead of any \"not connected to backend\" error.",
+        "If the backend returns an error indicating access control is already initialized, the frontend does not treat this as a fatal actor-creation error; the actor is still created and queries/mutations can proceed.",
+        "No backend files are modified.",
+        "No unrelated frontend refactors, redesigns, style/layout changes, or file structure changes are made; only the minimal code change necessary to restore admin-page form submission is included."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useActor.ts",
+          "operation": "modify",
+          "description": "Update the authenticated actor creation flow to be resilient to access-control initialization being already done: wrap the existing access-control initialization call (initializeAccessControl(), and if a secret-based initializer is present in the generated actor in this baseline, handle that similarly) in a try/catch that detects the specific \"already initialized\" failure and treats it as non-fatal, still returning the created actor for use by admin-page mutations (e.g., createForm). Use the authorization component’s intended behavior (first-time init vs subsequent calls) to avoid breaking RBAC bootstrap. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

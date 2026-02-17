@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "New project",
+  "architectural_notes": [
+    "Work exclusively from version 151 as the baseline; do not carry over any changes from versions 152–170.",
+    "Fix scope constraint: only make minimal code changes required to restore admin form submission; no refactor/redesign/layout/style/file-structure changes.",
+    "Integrate admin form submission with the existing backend without changing the backend structure/API contract."
+  ],
+  "known_issues": [
+    "Admin page form submission currently reports it is not connected to the backend; needs repair while keeping backend structure unchanged (baseline v151)."
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-fix-the-admin-page-form-submission-error-that-says-the-form-is-not-connected-to-the-backend-by-ensuring-the-frontend-actor-initialization-does-not-fail-when-calling-the-existing-backend-access-control-initialization-method-specifically-update-the-actor-creation-flow-so-that-if-initializeaccesscontrol-or-initializeaccesscontrolwithsecret-when-present-throws-because-access-control-is-already-initialized-the-error-is-handled-and-the-actor-is-still-returned-usable-do-not-change-any-backend-code-or-backend-interface-structure",
+      "title": "Fix the admin-page form submission error that says the form is not connected to the backend by ensuring the frontend actor initialization does not fail when calling the existing backend access-control initialization method.\n\nSpecifically, update the actor creation flow so that if `initializeAccessControl()` (or `_initializeAccessControlWithSecret(...)` when present) throws because access control is already initialized, the error is handled and the actor is still returned/usable. Do not change any backend code or backend interface/structure.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [],
+  "projectName": "Insurance Admin",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
