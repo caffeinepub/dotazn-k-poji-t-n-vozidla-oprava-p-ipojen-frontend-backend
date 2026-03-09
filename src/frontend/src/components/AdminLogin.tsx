@@ -1,11 +1,17 @@
-import { useState } from 'react';
-import { useInternetIdentity } from '../hooks/useInternetIdentity';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Label } from './ui/label';
-import { Checkbox } from './ui/checkbox';
-import { Shield, ArrowLeft } from 'lucide-react';
-import { toast } from 'sonner';
+import { ArrowLeft, Shield } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useInternetIdentity } from "../hooks/useInternetIdentity";
+import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Checkbox } from "./ui/checkbox";
+import { Label } from "./ui/label";
 
 interface AdminLoginProps {
   onCancel: () => void;
@@ -14,7 +20,7 @@ interface AdminLoginProps {
 export default function AdminLogin({ onCancel }: AdminLoginProps) {
   const { login, loginStatus } = useInternetIdentity();
   const [staySignedIn, setStaySignedIn] = useState(false);
-  const isLoggingIn = loginStatus === 'logging-in';
+  const isLoggingIn = loginStatus === "logging-in";
 
   const handleLogin = async () => {
     try {
@@ -23,8 +29,8 @@ export default function AdminLogin({ onCancel }: AdminLoginProps) {
       // The "Stay signed in" checkbox is kept for UX purposes but doesn't affect the actual session
       await login();
     } catch (error: any) {
-      console.error('Login error:', error);
-      toast.error('Chyba při přihlašování');
+      console.error("Login error:", error);
+      toast.error("Chyba při přihlašování");
     }
   };
 
@@ -50,10 +56,15 @@ export default function AdminLogin({ onCancel }: AdminLoginProps) {
               <Checkbox
                 id="staySignedIn"
                 checked={staySignedIn}
-                onCheckedChange={(checked) => setStaySignedIn(checked as boolean)}
+                onCheckedChange={(checked) =>
+                  setStaySignedIn(checked as boolean)
+                }
                 className="border-red-600 data-[state=checked]:bg-red-600"
               />
-              <Label htmlFor="staySignedIn" className="text-sm font-medium cursor-pointer text-gray-700">
+              <Label
+                htmlFor="staySignedIn"
+                className="text-sm font-medium cursor-pointer text-gray-700"
+              >
                 Zůstat přihlášen
               </Label>
             </div>
@@ -64,7 +75,7 @@ export default function AdminLogin({ onCancel }: AdminLoginProps) {
               className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-6 shadow-lg hover:shadow-xl transition-all duration-300"
               size="lg"
             >
-              {isLoggingIn ? 'Přihlašování...' : 'Přihlásit se'}
+              {isLoggingIn ? "Přihlašování..." : "Přihlásit se"}
             </Button>
 
             <Button

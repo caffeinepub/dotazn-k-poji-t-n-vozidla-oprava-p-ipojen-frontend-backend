@@ -1,0 +1,80 @@
+This URL is for administrators to:
+- Log in using Internet Identity
+- View all submitted forms
+- Monitor new submissions via the envelope 📩 badge
+- Manage form submissions
+
+## Deployment Steps
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Start the local Internet Computer replica (for testing):**
+   ```bash
+   dfx start --clean --background
+   ```
+
+3. **Deploy the canisters:**
+   ```bash
+   dfx deploy
+   ```
+
+4. **Get your canister IDs:**
+   ```bash
+   dfx canister id frontend
+   dfx canister id backend
+   ```
+
+5. **Access your application:**
+   - Client URL: `https://<frontend-canister-id>.ic0.app/`
+   - Admin URL: `https://<frontend-canister-id>.ic0.app/admin`
+
+## Production Deployment
+
+For production deployment on the Internet Computer mainnet:
+
+1. **Add cycles to your wallet:**
+   ```bash
+   dfx wallet balance
+   ```
+
+2. **Deploy to mainnet:**
+   ```bash
+   dfx deploy --network ic
+   ```
+
+3. **Get your production URLs:**
+   ```bash
+   dfx canister --network ic id frontend
+   ```
+   
+   Your production URLs will be:
+   - Client: `https://<frontend-canister-id>.ic0.app/`
+   - Admin: `https://<frontend-canister-id>.ic0.app/admin`
+
+## Admin Access
+
+The first user to authenticate with Internet Identity will automatically become the admin. Subsequent users will need to be granted admin permissions by the initial admin.
+
+## Features
+
+- **Client URL**: Public access to insurance form submission
+- **Admin URL**: Secure admin dashboard with Internet Identity authentication
+- **Shared Backend**: Both URLs connect to the same backend canister
+- **Real-time Updates**: New form submissions appear immediately in the admin dashboard
+- **Notification Badge**: Red badge on envelope icon shows count of new unviewed forms
+
+## Technical Details
+
+- Frontend: React + TypeScript + Tailwind CSS
+- Backend: Motoko canister on Internet Computer
+- Authentication: Internet Identity
+- Language: Czech (Česky)
+
+## Support
+
+For issues or questions, please refer to the Internet Computer documentation:
+- https://internetcomputer.org/docs
+- https://internetcomputer.org/docs/current/developer-docs/

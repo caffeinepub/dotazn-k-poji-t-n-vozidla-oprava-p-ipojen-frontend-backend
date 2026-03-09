@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useActor } from './useActor';
-import type { InsuranceForm, UserProfile, UserRole } from '../backend';
-import { toast } from 'sonner';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import type { InsuranceForm, UserProfile, UserRole } from "../backend";
+import { useActor } from "./useActor";
 
 // ============================================================================
 // Form Queries
@@ -14,26 +14,30 @@ export function useCreateForm() {
   return useMutation({
     mutationFn: async (form: InsuranceForm) => {
       if (!actor) {
-        throw new Error('Backend není dostupný. Zkontrolujte připojení k síti.');
+        throw new Error(
+          "Backend není dostupný. Zkontrolujte připojení k síti.",
+        );
       }
 
       try {
-        console.log('📤 Odesílání formuláře na backend...', form.id);
+        console.log("📤 Odesílání formuláře na backend...", form.id);
         await actor.createForm(form);
-        console.log('✅ Formulář úspěšně odeslán na backend');
+        console.log("✅ Formulář úspěšně odeslán na backend");
       } catch (error: any) {
-        console.error('❌ Chyba při odesílání formuláře:', error);
-        throw new Error(`Chyba při odesílání: ${error.message || 'Neznámá chyba'}`);
+        console.error("❌ Chyba při odesílání formuláře:", error);
+        throw new Error(
+          `Chyba při odesílání: ${error.message || "Neznámá chyba"}`,
+        );
       }
     },
     onSuccess: () => {
-      console.log('✅ Formulář úspěšně uložen, invaliduji cache');
-      queryClient.invalidateQueries({ queryKey: ['forms'] });
-      queryClient.invalidateQueries({ queryKey: ['newFormsCount'] });
-      toast.success('Formulář byl úspěšně odeslán!');
+      console.log("✅ Formulář úspěšně uložen, invaliduji cache");
+      queryClient.invalidateQueries({ queryKey: ["forms"] });
+      queryClient.invalidateQueries({ queryKey: ["newFormsCount"] });
+      toast.success("Formulář byl úspěšně odeslán!");
     },
     onError: (error: Error) => {
-      console.error('❌ Chyba při ukládání formuláře:', error);
+      console.error("❌ Chyba při ukládání formuláře:", error);
       toast.error(`Chyba: ${error.message}`);
     },
   });
@@ -43,21 +47,21 @@ export function useGetAllForms() {
   const { actor, isFetching } = useActor();
 
   return useQuery<InsuranceForm[]>({
-    queryKey: ['forms'],
+    queryKey: ["forms"],
     queryFn: async () => {
       if (!actor) {
-        console.log('❌ Actor není dostupný pro načtení formulářů');
+        console.log("❌ Actor není dostupný pro načtení formulářů");
         return [];
       }
 
       try {
-        console.log('📋 Načítání formulářů z backendu...');
+        console.log("📋 Načítání formulářů z backendu...");
         const forms = await actor.getAllFormsSorted();
-        console.log('✅ Načteno formulářů:', forms.length);
+        console.log("✅ Načteno formulářů:", forms.length);
         return forms;
       } catch (error: any) {
-        console.error('❌ Chyba při načítání formulářů:', error);
-        toast.error('Chyba při načítání formulářů');
+        console.error("❌ Chyba při načítání formulářů:", error);
+        toast.error("Chyba při načítání formulářů");
         return [];
       }
     },
@@ -73,22 +77,24 @@ export function useDeleteForm() {
   return useMutation({
     mutationFn: async (id: string) => {
       if (!actor) {
-        throw new Error('Backend není dostupný.');
+        throw new Error("Backend není dostupný.");
       }
 
       try {
-        console.log('🗑️ Mazání formuláře:', id);
+        console.log("🗑️ Mazání formuláře:", id);
         await actor.deleteForm(id);
-        console.log('✅ Formulář smazán');
+        console.log("✅ Formulář smazán");
       } catch (error: any) {
-        console.error('❌ Chyba při mazání formuláře:', error);
-        throw new Error(`Chyba při mazání: ${error.message || 'Neznámá chyba'}`);
+        console.error("❌ Chyba při mazání formuláře:", error);
+        throw new Error(
+          `Chyba při mazání: ${error.message || "Neznámá chyba"}`,
+        );
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['forms'] });
-      queryClient.invalidateQueries({ queryKey: ['newFormsCount'] });
-      toast.success('Formulář byl smazán');
+      queryClient.invalidateQueries({ queryKey: ["forms"] });
+      queryClient.invalidateQueries({ queryKey: ["newFormsCount"] });
+      toast.success("Formulář byl smazán");
     },
   });
 }
@@ -97,19 +103,21 @@ export function useGetNewFormsCount() {
   const { actor, isFetching } = useActor();
 
   return useQuery<bigint>({
-    queryKey: ['newFormsCount'],
+    queryKey: ["newFormsCount"],
     queryFn: async () => {
       if (!actor) {
-        console.log('❌ Actor není dostupný pro načtení počtu nových formulářů');
+        console.log(
+          "❌ Actor není dostupný pro načtení počtu nových formulářů",
+        );
         return BigInt(0);
       }
 
       try {
         const count = await actor.getNewFormsCount();
-        console.log('📊 Počet nových formulářů:', count.toString());
+        console.log("📊 Počet nových formulářů:", count.toString());
         return count;
       } catch (error: any) {
-        console.error('❌ Chyba při načítání počtu nových formulářů:', error);
+        console.error("❌ Chyba při načítání počtu nových formulářů:", error);
         return BigInt(0);
       }
     },
@@ -125,22 +133,22 @@ export function useMarkAllFormsAsViewed() {
   return useMutation({
     mutationFn: async () => {
       if (!actor) {
-        throw new Error('Backend není dostupný.');
+        throw new Error("Backend není dostupný.");
       }
 
       try {
-        console.log('👁️ Označování formulářů jako zobrazené...');
+        console.log("👁️ Označování formulářů jako zobrazené...");
         await actor.markAllFormsAsViewed();
-        console.log('✅ Formuláře označeny jako zobrazené');
+        console.log("✅ Formuláře označeny jako zobrazené");
       } catch (error: any) {
-        console.error('❌ Chyba při označování formulářů:', error);
-        throw new Error(`Chyba: ${error.message || 'Neznámá chyba'}`);
+        console.error("❌ Chyba při označování formulářů:", error);
+        throw new Error(`Chyba: ${error.message || "Neznámá chyba"}`);
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['forms'] });
-      queryClient.invalidateQueries({ queryKey: ['newFormsCount'] });
-      toast.success('Formuláře označeny jako přečtené');
+      queryClient.invalidateQueries({ queryKey: ["forms"] });
+      queryClient.invalidateQueries({ queryKey: ["newFormsCount"] });
+      toast.success("Formuláře označeny jako přečtené");
     },
   });
 }
@@ -153,18 +161,18 @@ export function useGetCallerUserProfile() {
   const { actor, isFetching: actorFetching } = useActor();
 
   const query = useQuery<UserProfile | null>({
-    queryKey: ['currentUserProfile'],
+    queryKey: ["currentUserProfile"],
     queryFn: async () => {
       if (!actor) {
-        console.log('❌ Actor není dostupný pro načtení profilu uživatele');
+        console.log("❌ Actor není dostupný pro načtení profilu uživatele");
         return null;
       }
       try {
         const profile = await actor.getCallerUserProfile();
-        console.log('👤 Profil uživatele:', profile ? 'Nalezen' : 'Nenalezen');
+        console.log("👤 Profil uživatele:", profile ? "Nalezen" : "Nenalezen");
         return profile;
       } catch (error: any) {
-        console.error('❌ Chyba při načítání profilu uživatele:', error);
+        console.error("❌ Chyba při načítání profilu uživatele:", error);
         return null;
       }
     },
@@ -186,19 +194,21 @@ export function useSaveCallerUserProfile() {
   return useMutation({
     mutationFn: async (profile: UserProfile) => {
       if (!actor) {
-        throw new Error('Backend není dostupný pro uložení profilu.');
+        throw new Error("Backend není dostupný pro uložení profilu.");
       }
       try {
-        console.log('💾 Ukládání profilu uživatele...');
+        console.log("💾 Ukládání profilu uživatele...");
         await actor.saveCallerUserProfile(profile);
-        console.log('✅ Profil uživatele uložen');
+        console.log("✅ Profil uživatele uložen");
       } catch (error: any) {
-        console.error('❌ Chyba při ukládání profilu uživatele:', error);
-        throw new Error(`Chyba při ukládání profilu: ${error.message || 'Neznámá chyba'}`);
+        console.error("❌ Chyba při ukládání profilu uživatele:", error);
+        throw new Error(
+          `Chyba při ukládání profilu: ${error.message || "Neznámá chyba"}`,
+        );
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['currentUserProfile'] });
+      queryClient.invalidateQueries({ queryKey: ["currentUserProfile"] });
     },
   });
 }
@@ -211,19 +221,19 @@ export function useGetCallerUserRole() {
   const { actor, isFetching } = useActor();
 
   return useQuery<UserRole>({
-    queryKey: ['userRole'],
+    queryKey: ["userRole"],
     queryFn: async () => {
       if (!actor) {
-        console.log('❌ Actor není dostupný pro načtení role uživatele');
-        return 'guest' as UserRole;
+        console.log("❌ Actor není dostupný pro načtení role uživatele");
+        return "guest" as UserRole;
       }
       try {
         const role = await actor.getCallerUserRole();
-        console.log('🔐 Role uživatele:', role);
+        console.log("🔐 Role uživatele:", role);
         return role;
       } catch (error: any) {
-        console.error('❌ Chyba při načítání role uživatele:', error);
-        return 'guest' as UserRole;
+        console.error("❌ Chyba při načítání role uživatele:", error);
+        return "guest" as UserRole;
       }
     },
     enabled: !!actor && !isFetching,
@@ -234,18 +244,18 @@ export function useIsCallerAdmin() {
   const { actor, isFetching } = useActor();
 
   return useQuery<boolean>({
-    queryKey: ['isAdmin'],
+    queryKey: ["isAdmin"],
     queryFn: async () => {
       if (!actor) {
-        console.log('❌ Actor není dostupný pro kontrolu admin oprávnění');
+        console.log("❌ Actor není dostupný pro kontrolu admin oprávnění");
         return false;
       }
       try {
         const isAdmin = await actor.isCallerAdmin();
-        console.log('👑 Je admin:', isAdmin);
+        console.log("👑 Je admin:", isAdmin);
         return isAdmin;
       } catch (error: any) {
-        console.error('❌ Chyba při kontrole admin oprávnění:', error);
+        console.error("❌ Chyba při kontrole admin oprávnění:", error);
         return false;
       }
     },
@@ -259,21 +269,21 @@ export function useIsCallerAdmin() {
 
 export const convertFormToCSVRow = (form: InsuranceForm): string => {
   const escapeCSV = (value: any): string => {
-    if (value === null || value === undefined) return '';
+    if (value === null || value === undefined) return "";
     const str = String(value);
-    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    if (str.includes(",") || str.includes('"') || str.includes("\n")) {
       return `"${str.replace(/"/g, '""')}"`;
     }
     return str;
   };
 
-  const vehicleTypes = form.vozidlo.vehicleType.join(';');
+  const vehicleTypes = form.vozidlo.vehicleType.join(";");
   const formatDate = (timestamp: bigint) => {
     const date = new Date(Number(timestamp) / 1000000);
-    return date.toLocaleDateString('cs-CZ', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
+    return date.toLocaleDateString("cs-CZ", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
     });
   };
 
@@ -288,31 +298,31 @@ export const convertFormToCSVRow = (form: InsuranceForm): string => {
     escapeCSV(form.provozovatel.email),
     escapeCSV(form.provozovatel.ico),
     escapeCSV(form.provozovatel.rodneCislo),
-    escapeCSV(form.provozovatel.isCompany ? 'Ano' : 'Ne'),
+    escapeCSV(form.provozovatel.isCompany ? "Ano" : "Ne"),
     escapeCSV(form.pojistnik.name),
     escapeCSV(form.pojistnik.address),
     escapeCSV(form.pojistnik.phone),
     escapeCSV(form.pojistnik.email),
     escapeCSV(form.pojistnik.ico),
     escapeCSV(form.pojistnik.rodneCislo),
-    escapeCSV(form.pojistnik.isCompany ? 'Ano' : 'Ne'),
-    escapeCSV(form.vlastnik?.name || ''),
-    escapeCSV(form.vlastnik?.address || ''),
-    escapeCSV(form.vlastnik?.phone || ''),
-    escapeCSV(form.vlastnik?.email || ''),
+    escapeCSV(form.pojistnik.isCompany ? "Ano" : "Ne"),
+    escapeCSV(form.vlastnik?.name || ""),
+    escapeCSV(form.vlastnik?.address || ""),
+    escapeCSV(form.vlastnik?.phone || ""),
+    escapeCSV(form.vlastnik?.email || ""),
     escapeCSV(vehicleTypes),
     escapeCSV(form.vozidlo.spz),
     escapeCSV(form.vozidlo.vin),
     escapeCSV(form.vozidlo.brand),
     escapeCSV(form.vozidlo.model),
     escapeCSV(form.vozidlo.usageType),
-    escapeCSV(form.insuranceOptions.povinneRuceni ? 'Ano' : 'Ne'),
-    escapeCSV(form.insuranceOptions.havarijniPojisteni ? 'Ano' : 'Ne'),
-    escapeCSV(form.insuranceOptions.pojisteniSkel ? 'Ano' : 'Ne'),
-    escapeCSV(form.insuranceOptions.pojisteniAsistence ? 'Ano' : 'Ne'),
+    escapeCSV(form.insuranceOptions.povinneRuceni ? "Ano" : "Ne"),
+    escapeCSV(form.insuranceOptions.havarijniPojisteni ? "Ano" : "Ne"),
+    escapeCSV(form.insuranceOptions.pojisteniSkel ? "Ano" : "Ne"),
+    escapeCSV(form.insuranceOptions.pojisteniAsistence ? "Ano" : "Ne"),
     escapeCSV(form.paymentFrequency),
-    escapeCSV(form.mileage || ''),
+    escapeCSV(form.mileage || ""),
     escapeCSV(form.notes),
-    escapeCSV(form.status === 'completed' ? 'Dokončený' : 'Rozpracovaný'),
-  ].join(',');
+    escapeCSV(form.status === "completed" ? "Dokončený" : "Rozpracovaný"),
+  ].join(",");
 };

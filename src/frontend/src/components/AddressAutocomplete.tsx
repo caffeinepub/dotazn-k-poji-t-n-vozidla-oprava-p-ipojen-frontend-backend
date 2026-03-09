@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import { useEffect, useRef, useState } from "react";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 interface MapyCzSuggestion {
   userData: {
@@ -21,7 +21,7 @@ interface CombinedSuggestion {
   displayText: string;
   secondaryText: string;
   fullAddress: string;
-  source: 'mapy' | 'nominatim';
+  source: "mapy" | "nominatim";
 }
 
 interface AddressAutocompleteProps {
@@ -37,8 +37,8 @@ export default function AddressAutocomplete({
   value,
   onChange,
   label,
-  placeholder = 'Začněte psát adresu...',
-  className = '',
+  placeholder = "Začněte psát adresu...",
+  className = "",
   hasError = false,
 }: AddressAutocompleteProps) {
   const [suggestions, setSuggestions] = useState<CombinedSuggestion[]>([]);
@@ -50,23 +50,28 @@ export default function AddressAutocomplete({
   // Close suggestions when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
         setShowSuggestions(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const fetchMapyCzSuggestions = async (query: string): Promise<CombinedSuggestion[]> => {
+  const fetchMapyCzSuggestions = async (
+    query: string,
+  ): Promise<CombinedSuggestion[]> => {
     try {
       const response = await fetch(
         `https://api.mapy.cz/v1/suggest?lang=cs&limit=10&type=regional&query=${encodeURIComponent(query)}`,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.ok) {
@@ -75,10 +80,13 @@ export default function AddressAutocomplete({
           return data.items.map((item: MapyCzSuggestion) => {
             const { userData } = item;
             let fullAddress = userData.suggestFirstRow;
-            
+
             // Add additional details if available (city, postal code, region)
             const parts: string[] = [];
-            if (userData.municipality && !fullAddress.includes(userData.municipality)) {
+            if (
+              userData.municipality &&
+              !fullAddress.includes(userData.municipality)
+            ) {
               parts.push(userData.municipality);
             }
             if (userData.zip) {
@@ -87,59 +95,61 @@ export default function AddressAutocomplete({
             if (userData.region && !fullAddress.includes(userData.region)) {
               parts.push(userData.region);
             }
-            
+
             if (parts.length > 0) {
-              fullAddress += ', ' + parts.join(', ');
+              fullAddress += `, ${parts.join(", ")}`;
             }
 
             return {
               displayText: userData.suggestFirstRow,
-              secondaryText: userData.suggestSecondRow || '',
+              secondaryText: userData.suggestSecondRow || "",
               fullAddress,
-              source: 'mapy' as const,
+              source: "mapy" as const,
             };
           });
         }
       }
     } catch (error) {
-      console.error('Mapy.cz API error:', error);
+      console.error("Mapy.cz API error:", error);
     }
     return [];
   };
 
-  const fetchNominatimSuggestions = async (query: string): Promise<CombinedSuggestion[]> => {
+  const fetchNominatimSuggestions = async (
+    query: string,
+  ): Promise<CombinedSuggestion[]> => {
     try {
       // Using OpenStreetMap Nominatim API as fallback for Czech addresses
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&countrycodes=cz&limit=5&q=${encodeURIComponent(query)}`,
         {
           headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'InsuranceFormApp/1.0', // Required by Nominatim
+            Accept: "application/json",
+            "User-Agent": "InsuranceFormApp/1.0", // Required by Nominatim
           },
-        }
+        },
       );
 
       if (response.ok) {
         const data = await response.json();
         if (Array.isArray(data)) {
           return data.map((item: any) => {
-            const displayName = item.display_name || '';
-            const parts = displayName.split(', ');
-            const primaryText = parts.slice(0, 2).join(', ');
-            const secondaryText = parts.slice(2).join(', ');
+            const displayName = item.display_name || "";
+            const parts = displayName.split(", ");
+            const primaryText = parts.slice(0, 2).join(", ");
+            const secondaryText = parts.slice(2).join(", ");
 
             return {
               displayText: primaryText,
               secondaryText: secondaryText,
               fullAddress: displayName,
-              source: 'nominatim' as const,
+              source: "nominatim" as const,
             };
           });
         }
       }
     } catch (error) {
-      console.error('Nominatim API error:', error);
+      console.error("Nominatim API error:", error);
     }
     return [];
   };
@@ -176,7 +186,10 @@ export default function AddressAutocomplete({
       if (combinedResults.length < 5) {
         for (const result of nominatimResults) {
           const normalizedAddress = result.fullAddress.toLowerCase().trim();
-          if (!seenAddresses.has(normalizedAddress) && combinedResults.length < 10) {
+          if (
+            !seenAddresses.has(normalizedAddress) &&
+            combinedResults.length < 10
+          ) {
             combinedResults.push(result);
             seenAddresses.add(normalizedAddress);
           }
@@ -186,7 +199,7 @@ export default function AddressAutocomplete({
       setSuggestions(combinedResults);
       setShowSuggestions(combinedResults.length > 0);
     } catch (error) {
-      console.error('Error fetching address suggestions:', error);
+      console.error("Error fetching address suggestions:", error);
       setSuggestions([]);
       setShowSuggestions(false);
     } finally {
@@ -217,7 +230,9 @@ export default function AddressAutocomplete({
   return (
     <div ref={wrapperRef} className={`relative ${className}`}>
       {label && (
-        <Label className="text-sm font-semibold block mb-2 text-gray-700">{label}</Label>
+        <Label className="text-sm font-semibold block mb-2 text-gray-700">
+          {label}
+        </Label>
       )}
       <div className="relative">
         <Input
@@ -228,7 +243,7 @@ export default function AddressAutocomplete({
               setShowSuggestions(true);
             }
           }}
-          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 shadow-sm ${hasError ? 'border-red-600 bg-red-50 animate-error-blink' : ''}`}
+          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 shadow-sm ${hasError ? "border-red-600 bg-red-50 animate-error-blink" : ""}`}
           placeholder={placeholder}
           autoComplete="off"
           data-error={hasError}
@@ -264,11 +279,14 @@ export default function AddressAutocomplete({
       )}
 
       {/* No results message */}
-      {showSuggestions && !isLoading && suggestions.length === 0 && value.length >= 3 && (
-        <div className="absolute z-50 w-full mt-1 bg-white border-2 border-red-300 rounded-lg shadow-xl p-4 text-center text-gray-500 text-sm">
-          Žádné výsledky nenalezeny
-        </div>
-      )}
+      {showSuggestions &&
+        !isLoading &&
+        suggestions.length === 0 &&
+        value.length >= 3 && (
+          <div className="absolute z-50 w-full mt-1 bg-white border-2 border-red-300 rounded-lg shadow-xl p-4 text-center text-gray-500 text-sm">
+            Žádné výsledky nenalezeny
+          </div>
+        )}
     </div>
   );
 }

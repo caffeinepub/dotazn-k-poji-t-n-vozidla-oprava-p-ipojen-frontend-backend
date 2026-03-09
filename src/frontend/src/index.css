@@ -88,7 +88,8 @@
 
 /* Ping animation for notification badge */
 @keyframes ping {
-  75%, 100% {
+  75%,
+  100% {
     transform: scale(1.5);
     opacity: 0;
   }
@@ -100,7 +101,8 @@
 
 /* Unified smooth continuous red blinking animation with enhanced timing and easing for plynulé, konzistentní behavior */
 @keyframes errorBlink {
-  0%, 100% {
+  0%,
+  100% {
     border-color: rgb(220, 38, 38);
     background-color: rgba(254, 226, 226, 1);
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);

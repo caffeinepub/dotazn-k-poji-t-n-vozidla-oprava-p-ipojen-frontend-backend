@@ -1,9 +1,16 @@
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Mail, User } from 'lucide-react';
+import { Mail, User } from "lucide-react";
+import { useState } from "react";
+import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 interface SubmissionModalProps {
   open: boolean;
@@ -12,9 +19,14 @@ interface SubmissionModalProps {
   isSubmitting: boolean;
 }
 
-export default function SubmissionModal({ open, onSubmit, onCancel, isSubmitting }: SubmissionModalProps) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+export default function SubmissionModal({
+  open,
+  onSubmit,
+  onCancel,
+  isSubmitting,
+}: SubmissionModalProps) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
     if (!name.trim() || !email.trim()) {
@@ -23,23 +35,31 @@ export default function SubmissionModal({ open, onSubmit, onCancel, isSubmitting
     onSubmit(name, email);
   };
 
-  const isValid = name.trim() !== '' && email.trim() !== '' && email.includes('@');
+  const isValid =
+    name.trim() !== "" && email.trim() !== "" && email.includes("@");
 
   return (
-    <Dialog open={open} onOpenChange={(open) => !open && !isSubmitting && onCancel()}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => !open && !isSubmitting && onCancel()}
+    >
       <DialogContent className="sm:max-w-md bg-white">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-gray-900">
             Dokončení odeslání
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Pro dokončení odeslání formuláře prosím vyplňte vaše kontaktní údaje.
+            Pro dokončení odeslání formuláře prosím vyplňte vaše kontaktní
+            údaje.
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="submitter-name" className="text-sm font-semibold text-gray-700">
+            <Label
+              htmlFor="submitter-name"
+              className="text-sm font-semibold text-gray-700"
+            >
               Jméno a příjmení *
             </Label>
             <div className="relative">
@@ -56,7 +76,10 @@ export default function SubmissionModal({ open, onSubmit, onCancel, isSubmitting
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="submitter-email" className="text-sm font-semibold text-gray-700">
+            <Label
+              htmlFor="submitter-email"
+              className="text-sm font-semibold text-gray-700"
+            >
               E-mail *
             </Label>
             <div className="relative">
@@ -90,7 +113,7 @@ export default function SubmissionModal({ open, onSubmit, onCancel, isSubmitting
             disabled={!isValid || isSubmitting}
             className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white"
           >
-            {isSubmitting ? 'Odesílání...' : 'Odeslat formulář'}
+            {isSubmitting ? "Odesílání..." : "Odeslat formulář"}
           </Button>
         </DialogFooter>
       </DialogContent>

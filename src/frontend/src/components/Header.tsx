@@ -1,5 +1,5 @@
-import { Mail } from 'lucide-react';
-import { Button } from './ui/button';
+import { Mail } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface HeaderProps {
   onEnvelopeClick?: () => void;
@@ -11,12 +11,13 @@ export default function Header({ onEnvelopeClick }: HeaderProps) {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Car image with 3D red glow effect */}
         <div className="flex items-center gap-4">
-          <img 
-            src="/assets/image.png" 
-            alt="Car" 
+          <img
+            src="/assets/image.png"
+            alt="Car"
             className="h-12 w-auto"
             style={{
-              filter: 'drop-shadow(0 0 8px rgba(220, 38, 38, 0.6)) drop-shadow(0 0 16px rgba(220, 38, 38, 0.4))',
+              filter:
+                "drop-shadow(0 0 8px rgba(220, 38, 38, 0.6)) drop-shadow(0 0 16px rgba(220, 38, 38, 0.4))",
             }}
           />
           <h1 className="text-2xl font-bold text-white uppercase tracking-wide">
